@@ -14,6 +14,21 @@ Two static pages, no build step.
 - `_assets/` — careers page: its own stylesheet, script and photography,
   mirrored from the original careers site with paths unchanged.
 
+### Caching, and the trap in it
+
+`vercel.json` caches `assets/` and `_assets/` for a year as `immutable`, which
+is right for the images and fonts: their names carry their size, so a different
+file is always a different URL.
+
+CSS and JS are not like that — the names never change, so an `immutable` year
+meant a returning visitor kept the old stylesheet and never asked for a new one.
+A redesign shipped, and anyone who had seen the site before still saw the old
+one. `.css` and `.js` therefore get `max-age=0, must-revalidate` instead, which
+costs one 304 per visit and can never go stale.
+
+The `?v=` on the stylesheet and script in `index.html` was the one-time break
+out of caches already poisoned by the old header. Leave it; it is harmless.
+
 The two pages keep separate stylesheets on purpose: the holding page uses the
 Mist Blue palette, the careers page its own darker treatment.
 
