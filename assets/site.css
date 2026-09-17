@@ -1,0 +1,278 @@
+/* ==========================================================================
+   Amami Italia — shared styles
+   Palette and type are taken from the brand deck:
+   Charcoal Black / Warm Beige / Mist Blue / Tuscan Brown / Medium Rare Red,
+   Cormorant Garamond (display) + Poppins (body).
+   ========================================================================== */
+
+:root{
+  --mist:      #cbd6e3;
+  --charcoal:  #161616;
+  --beige:     #eee9da;
+  --brown:     #462e24;
+  --rare:      #812b28;
+  /* .72 alpha keeps secondary text at 5.9:1 on mist — AA for small text */
+  --ink-soft:  rgba(22,22,22,.72);
+  --rule:      rgba(70,46,36,.22);
+
+  --display: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --body:    "Poppins", "Helvetica Neue", Arial, sans-serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ color-scheme:light; -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--mist);
+  color:var(--charcoal);
+  font-family:var(--body);
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Keyboard users land on a skip link before anything else. */
+.skip{
+  position:absolute; left:-9999px;
+  padding:12px 18px;
+  background:var(--charcoal); color:var(--beige);
+  font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
+  z-index:10;
+}
+.skip:focus{ left:16px; top:16px; }
+
+.stage{
+  max-width:920px;
+  margin:0 auto;
+  padding-inline:max(24px, env(safe-area-inset-left));
+  padding-block:64px 40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:34px;
+  text-align:center;
+}
+
+/* ---- mark + wordmark ---- */
+.mark{ width:104px; height:auto; display:block; opacity:.72; }
+
+.wordmark{
+  margin:0;
+  font-family:var(--body);
+  font-weight:500;
+  font-size:clamp(1.25rem,1rem + 1.2vw,1.6rem);
+  letter-spacing:.42em;
+  text-indent:.42em;            /* optical centring against the tracking */
+  line-height:1;
+}
+.wordmark a{ color:inherit; text-decoration:none; }
+.wordmark a:focus-visible{ outline:2px solid var(--rare); outline-offset:6px; }
+
+/* A quiet label under the wordmark, e.g. "Careers" */
+.eyebrow{
+  margin:-22px 0 0;
+  font-family:var(--display);
+  font-size:1.05rem;
+  font-style:italic;
+  font-weight:300;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--brown);
+}
+
+/* ---- prose ---- */
+.notice{
+  margin:0;
+  max-width:44ch;
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(1.15rem,1rem + 1.1vw,1.6rem);
+  line-height:1.5;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+  text-wrap:balance;
+}
+
+.lede{
+  margin:0;
+  max-width:60ch;
+  font-size:.95rem;
+  line-height:1.75;
+  color:var(--ink-soft);
+  text-wrap:pretty;
+}
+
+.sign{
+  margin:-16px 0 0;
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:300;
+  font-size:1.05rem;
+  letter-spacing:.03em;
+  color:var(--brown);
+}
+
+/* ---- actions ---- */
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:14px;
+  width:100%;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;              /* comfortable tap target */
+  padding:15px 34px;
+  font-family:var(--body);
+  font-size:.7rem;
+  font-weight:400;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border:1px solid var(--charcoal);
+  transition:background-color .25s ease,color .25s ease,border-color .25s ease;
+}
+.btn--solid{ background:var(--charcoal); color:var(--beige); }
+.btn--solid:hover,.btn--solid:focus-visible{ background:var(--rare); border-color:var(--rare); color:var(--beige); }
+.btn--line{ background:transparent; color:var(--charcoal); border-color:var(--brown); }
+.btn--line:hover,.btn--line:focus-visible{ background:var(--brown); border-color:var(--brown); color:var(--beige); }
+.btn:focus-visible{ outline:2px solid var(--rare); outline-offset:3px; }
+
+/* Calling is the top task on a phone, secondary on a desktop */
+.btn--call{ display:none; }
+
+/* ---- open-now status ---- */
+.status{
+  margin:0;
+  min-height:1.1em;             /* reserve space so JS can't shift the layout */
+  font-size:.74rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.status__dot{
+  display:inline-block;
+  width:7px; height:7px;
+  margin-inline-end:8px;
+  border-radius:50%;
+  background:currentColor;
+  vertical-align:.08em;
+}
+.status[data-state="open"]{ color:var(--brown); }
+
+/* ---- the room ---- */
+.scene{ margin:8px 0 0; width:100%; }
+.scene img{ display:block; width:100%; max-width:100%; height:auto; }
+
+/* ---- roles (careers) ---- */
+.roles{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1px;                       /* hairline grid drawn by the background */
+  background:var(--rule);
+  border:1px solid var(--rule);
+  text-align:left;
+}
+.role{
+  background:var(--mist);
+  padding:26px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.role h3{
+  margin:0;
+  font-family:var(--display);
+  font-weight:500;
+  font-size:1.2rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.role p{
+  margin:0;
+  font-size:.82rem;
+  line-height:1.7;
+  color:var(--ink-soft);
+}
+
+/* ---- section heading ---- */
+.section-title{
+  margin:0;
+  font-size:.72rem;
+  font-weight:400;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+
+/* ---- details / footer ---- */
+.detail{
+  width:100%;
+  border-top:1px solid var(--rule);
+  padding-top:22px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:.74rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.detail a{
+  display:inline-block;
+  padding:9px 2px;              /* ≥44px tall hit area */
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color .2s ease,border-color .2s ease;
+}
+.detail a:hover,.detail a:focus-visible{ color:var(--rare); border-bottom-color:var(--rare); }
+.detail a:focus-visible{ outline:2px solid var(--rare); outline-offset:2px; }
+.detail a[aria-current="page"]{ color:var(--charcoal); border-bottom-color:var(--rule); }
+.detail__row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:0 14px;
+}
+.sep{ color:rgba(70,46,36,.45); }
+.detail__hours{ letter-spacing:.08em; gap:4px 12px; padding-top:6px; }
+.detail__hours span{ white-space:nowrap; }
+.detail__hours [data-today]{ color:var(--charcoal); }
+
+/* ==========================================================================
+   Phones
+   ========================================================================== */
+@media (max-width:560px){
+  .stage{ padding-block:44px 32px; gap:26px; }
+  .mark{ width:84px; }
+
+  /* Stack the actions full-width so each is an easy, unambiguous tap. */
+  .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:340px; }
+  .btn{ width:100%; padding:16px 20px; }
+  .btn--call{ display:inline-flex; }
+
+  .roles{ grid-template-columns:1fr; }
+  .role{ padding:22px 20px; }
+
+  .detail{ gap:2px; }
+  .detail__row{ flex-direction:column; gap:0; }
+  .detail__row .sep{ display:none; }
+  .detail a{ padding:11px 2px; }
+  .detail__hours{
+    flex-direction:row; flex-wrap:wrap; justify-content:center;
+    gap:4px 10px; font-size:.7rem; padding-top:10px;
+  }
+  .detail__hours .sep{ display:inline; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; }
+}
