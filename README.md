@@ -22,15 +22,17 @@ Mist Blue palette, the careers page its own darker treatment.
 `_assets/careers.js` POSTs to a Google Apps Script endpoint, so it works from
 any origin and needs no server here.
 
-## Domain cutover
+## Domain
 
-Canonical and `og:` URLs currently point at the addresses that are live today.
-When the real domain is pointed at this deployment:
+Production is <https://www.amamiitalia.com>. Canonical, `og:` and sitemap URLs
+all point there.
 
-1. `index.html` — canonical, `og:url`, `og:image`, `twitter:image`
-2. `careers/index.html` — canonical and `og:url` (see the `DOMAIN CUTOVER` comment)
-3. `sitemap.xml` and `robots.txt`
-4. 301 `careers.amamiitalia.com` → `<domain>/careers`
+Two things still sit outside this repo, in DNS / Vercel:
+
+1. The apex `amamiitalia.com` is not pointed at this deployment — it still
+   resolves to a parking lander. Add it in Vercel and redirect it to `www`.
+2. `careers.amamiitalia.com` still serves the old standalone copy. 301 it to
+   `https://www.amamiitalia.com/careers` so the two do not compete in search.
 
 ## Editing the careers page
 
