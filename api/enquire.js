@@ -3,8 +3,14 @@
    no-dependency shape. RESEND_API_KEY must be set in Vercel; ENQUIRY_TO and
    ENQUIRY_FROM are optional overrides. */
 
-const DEFAULT_TO   = "info@amamiitalia.com";
-const DEFAULT_FROM = "Amami Italia <onboarding@resend.dev>";
+/* ENQUIRY_TO / ENQUIRY_FROM in Vercel override these without a deploy.
+   Enquiries do not go to info@amamiitalia.com: that domain publishes no MX
+   record, so mail addressed there has nowhere to land. Point this back at it
+   once the domain can actually receive mail.
+   The sender must stay on a domain verified in Resend — with Resend's shared
+   sender, it will only deliver to the account owner. */
+const DEFAULT_TO   = "skundnani@etherealpr.com";
+const DEFAULT_FROM = "Amami Italia <enquiries@amamiitalia.com>";
 
 const FIELDS = [
   ["name",    "Name"],

@@ -49,15 +49,21 @@ a size-limited request body here.
 no dependencies, just `fetch` to Resend's HTTP API. Set this in the Vercel
 project (Settings → Environment Variables):
 
-| Variable         | Required | Default                                |
-|------------------|----------|----------------------------------------|
-| `RESEND_API_KEY` | yes      | —                                      |
-| `ENQUIRY_TO`     | no       | `info@amamiitalia.com`                 |
-| `ENQUIRY_FROM`   | no       | `Amami Italia <onboarding@resend.dev>` |
+| Variable         | Required | Default                                  |
+|------------------|----------|------------------------------------------|
+| `RESEND_API_KEY` | yes      | —                                        |
+| `ENQUIRY_TO`     | no       | `skundnani@etherealpr.com`               |
+| `ENQUIRY_FROM`   | no       | `Amami Italia <enquiries@amamiitalia.com>` |
 
-Once `amamiitalia.com` is verified in Resend, set `ENQUIRY_FROM` to an address
-on that domain — until then Resend's shared sender is used, which delivers but
-is not branded.
+Both defaults are deliberate, and both are worth revisiting:
+
+- **The sender** must be on a domain verified in Resend. Resend's shared
+  `onboarding@resend.dev` sender only delivers to the Resend account owner —
+  every other recipient comes back `403 validation_error`.
+- **The recipient** is not `info@amamiitalia.com`, the address this site
+  publishes, because `amamiitalia.com` serves no MX record — mail sent there
+  has nowhere to land. Enquiries go to the agency inbox until that is fixed.
+  The same gap applies to the careers form, which still mails `info@`.
 
 The enquiry panel is open in the markup and closed by JS on load, so a visitor
 without JavaScript still sees a form that posts; the function redirects that
