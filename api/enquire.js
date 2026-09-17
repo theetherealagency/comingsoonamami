@@ -1,15 +1,20 @@
 /* POST /api/enquire — mails a holding-page enquiry to the restaurant.
    Resend's HTTP API over native fetch, so the site keeps its no-build,
-   no-dependency shape. RESEND_API_KEY must be set in Vercel; ENQUIRY_TO and
-   ENQUIRY_FROM are optional overrides. */
+   no-dependency shape. RESEND_API_KEY must be set in Vercel; ENQUIRY_TO,
+   ENQUIRY_COPY and ENQUIRY_FROM are optional overrides. */
 
-/* ENQUIRY_TO / ENQUIRY_FROM in Vercel override these without a deploy.
-   Enquiries do not go to info@amamiitalia.com: that domain publishes no MX
-   record, so mail addressed there has nowhere to land. Point this back at it
-   once the domain can actually receive mail.
-   The sender must stay on a domain verified in Resend — with Resend's shared
-   sender, it will only deliver to the account owner. */
-const DEFAULT_TO   = "skundnani@etherealpr.com";
+/* Enquiries go to info@amamiitalia.com, the address this site publishes.
+
+   COPY is a safety net, not decoration: amamiitalia.com serves no MX record,
+   so mail to info@ has nowhere to land and bounces. Resend delivers per
+   recipient, so the copy still arrives while the primary does not — without
+   it, every enquiry would be lost silently. Clear ENQUIRY_COPY in Vercel once
+   the domain can receive mail, and this becomes a plain single-recipient send.
+
+   The sender must stay on a domain verified in Resend: with Resend's shared
+   sender, it only delivers to the Resend account owner. */
+const DEFAULT_TO   = "info@amamiitalia.com";
+const DEFAULT_COPY = "skundnani@etherealpr.com";
 const DEFAULT_FROM = "Amami Italia <enquiries@amamiitalia.com>";
 
 const FIELDS = [
@@ -75,6 +80,12 @@ module.exports = async function handler(req, res) {
     return finish(500, { ok: false, error: "Enquiries are not set up yet. Please email us directly." }, "?enquiry=error#enquire");
   }
 
+  // Setting ENQUIRY_COPY to an empty string turns the copy off; leaving it
+  // unset keeps the default. Hence the explicit undefined check.
+  const copy = process.env.ENQUIRY_COPY === undefined
+    ? DEFAULT_COPY
+    : process.env.ENQUIRY_COPY.trim();
+
   const filled = FIELDS.filter(function (f) { return value[f[0]]; });
   const text = filled.map(function (f) { return f[1] + ": " + value[f[0]]; }).join("\n");
   const rows = filled.map(function (f) {
@@ -102,6 +113,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         from: process.env.ENQUIRY_FROM || DEFAULT_FROM,
         to: process.env.ENQUIRY_TO || DEFAULT_TO,
+        cc: copy || undefined,
         reply_to: value.email,
         subject: "Enquiry — " + (value.type || "Amami Italia") + " — " + value.name,
         text: text,
