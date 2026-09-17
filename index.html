@@ -28,9 +28,8 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"Amami Italia","url":"https://www.amamiitalia.com/","image":"https://www.amamiitalia.com/assets/og.png","description":"Tuscan restaurant, lounge & catering in Brampton.","telephone":"+1-905-794-3366","email":"info@amamiitalia.com","priceRange":"$$$","servesCuisine":["Italian","Tuscan"],"address":{"@type":"PostalAddress","streetAddress":"6261 Mayfield Rd, #140","addressLocality":"Brampton","addressRegion":"ON","postalCode":"L6P 0X9","addressCountry":"CA"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday"],"opens":"12:00","closes":"22:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"12:00","closes":"23:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"12:00","closes":"21:00"}],"acceptsReservations":"https://www.opentable.ca/restref/client/?rid=1470808&lang=en-CA&ot_source=Restaurant%20website","sameAs":["https://www.instagram.com/amamiitalia_official"]}</script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/poppins-latin-400-normal.woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
@@ -39,10 +38,8 @@
 
 <main class="stage" id="main">
   <div class="lockup">
-    <picture>
-      <source srcset="assets/amami-mark.webp" type="image/webp">
-      <img class="mark" src="assets/amami-mark.png" alt="" width="1069" height="1057" fetchpriority="high" decoding="async">
-    </picture>
+    <img class="mark" src="assets/amami-mark-128.png" alt=""
+         width="128" height="127" fetchpriority="high" decoding="async">
     <p class="wordmark">AMAMI ITALIA</p>
     <p class="lockup__note">Brampton</p>
   </div>
@@ -127,8 +124,12 @@
 
   <figure class="scene">
     <picture>
-      <source srcset="assets/storefront.webp" type="image/webp">
-      <img src="assets/storefront.png" alt="Illustration of the Amami Italia dining room — the wine wall, the bar, and the team walking the floor" width="954" height="506" decoding="async">
+      <source type="image/webp"
+              srcset="assets/storefront-480.webp 480w,
+                      assets/storefront-720.webp 720w,
+                      assets/storefront-954.webp 954w"
+              sizes="(max-width: 560px) calc(100vw - 48px), (max-width: 968px) calc(100vw - 48px), 872px">
+      <img src="assets/storefront.png" alt="Illustration of the Amami Italia dining room — the wine wall, the bar, and the team walking the floor" width="954" height="506" loading="lazy" decoding="async">
     </picture>
   </figure>
 
