@@ -17,10 +17,25 @@ Two static pages, no build step.
 The two pages keep separate stylesheets on purpose: the holding page uses the
 Mist Blue palette, the careers page its own darker treatment.
 
-## The careers form
+## The forms
 
-`_assets/careers.js` POSTs to a Google Apps Script endpoint, so it works from
-any origin and needs no server here.
+Both forms POST to the same Google Apps Script endpoint, so they work from any
+origin and need no server here.
+
+| Form     | Script                 | Posts `form=` | Lands at               |
+|----------|------------------------|---------------|------------------------|
+| Careers  | `_assets/careers.js`   | `careers`     | `info@amamiitalia.com` |
+| Enquiry  | `assets/enquiry.js`    | `enquiry`     | `admin@amamiitalia.com`|
+
+`docs/apps-script.gs` is the script behind that endpoint — it branches on the
+`form` field and routes each to its own inbox. Editing it is a paste-and-deploy
+job in script.google.com; the file's header has the steps. **Edit the existing
+deployment rather than creating a new one**, or the URL changes and both forms
+break.
+
+The enquiry panel is open in the markup and closed by JS on load, so a visitor
+without JavaScript still sees a form that posts. If the endpoint is unreachable,
+the script falls back to a pre-filled `mailto:` rather than losing the enquiry.
 
 ## Domain
 

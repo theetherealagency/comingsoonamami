@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Amami Italia — Tuscan Restaurant &amp; Lounge in Brampton</title>
 <meta name="description" content="Amami Italia — Tuscan restaurant, lounge and catering in Brampton. Our website is being refreshed; reserve a table, call us or enquire here in the meantime.">
-<meta name="theme-color" content="#cbd6e3">
+<meta name="theme-color" content="#eee9da">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://www.amamiitalia.com/">
 
@@ -38,24 +38,98 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <main class="stage" id="main">
-  <picture>
-    <source srcset="assets/amami-mark.webp" type="image/webp">
-    <img class="mark" src="assets/amami-mark.png" alt="" width="1069" height="1057" fetchpriority="high" decoding="async">
-  </picture>
+  <div class="lockup">
+    <picture>
+      <source srcset="assets/amami-mark.webp" type="image/webp">
+      <img class="mark" src="assets/amami-mark.png" alt="" width="1069" height="1057" fetchpriority="high" decoding="async">
+    </picture>
+    <p class="wordmark">AMAMI ITALIA</p>
+    <p class="lockup__note">Brampton</p>
+  </div>
 
-  <h1 class="wordmark">AMAMI</h1>
+  <h1 class="display">
+    <span>Our website is</span>
+    <span>being <em>refreshed</em>.</span>
+    <span>Until then, Amami</span>
+    <span>welcomes you <em>as always</em>.</span>
+  </h1>
 
-  <p class="notice">Our website is being refreshed. Until then, Amami Italia welcomes you as always — book or enquire below.</p>
   <p class="sign">Ci vediamo presto.</p>
 
   <div class="actions">
     <a class="btn btn--solid" href="https://www.opentable.ca/restref/client/?rid=1470808&amp;lang=en-CA&amp;ot_source=Restaurant%20website" target="_blank" rel="noopener">Reserve a table</a>
     <a class="btn btn--line btn--call" href="tel:+19057943366">Call us</a>
-    <a class="btn btn--line" href="mailto:info@amamiitalia.com?subject=Enquiry%20%E2%80%94%20Amami%20Italia">Enquire</a>
-    <a class="btn btn--line" href="/careers">Join our team</a>
+    <a class="btn btn--line" id="enquire-toggle" href="#enquire" aria-expanded="false" aria-controls="enquire">Enquire</a>
+    <a class="btn btn--line" href="/careers">Join Our Team</a>
   </div>
 
   <p class="status" id="status" role="status"></p>
+
+  <!-- Enquiry. Hidden by JS on load; without JS it simply sits open and
+       posts natively, so the form never becomes a dead button. -->
+  <section class="enquire" id="enquire" aria-labelledby="enquire-title">
+    <h2 class="section-title" id="enquire-title">Send us an enquiry</h2>
+
+    <form class="form" id="enquire-form" method="post"
+          action="https://script.google.com/macros/s/AKfycbzx8c22GI36anssZl5imV-w6rfRga85NT2eCyl0RQuG3f6u7kL8jLaX8r7qEBHPiwr75A/exec">
+      <input type="hidden" name="form" value="enquiry">
+      <!-- honeypot: real people leave this empty -->
+      <p class="hp" aria-hidden="true"><label>Website<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></p>
+
+      <div class="field">
+        <label for="e-name">Name</label>
+        <input id="e-name" name="name" type="text" autocomplete="name" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="e-email">Email</label>
+          <input id="e-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="e-phone">Phone</label>
+          <input id="e-phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="e-type">What is this about</label>
+        <select id="e-type" name="type" required>
+          <option value="">Choose one</option>
+          <option>Private event or party</option>
+          <option>Catering</option>
+          <option>Large group booking</option>
+          <option>Media or partnership</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="e-date">Date <span class="opt">optional</span></label>
+          <input id="e-date" name="date" type="date">
+        </div>
+        <div class="field">
+          <label for="e-guests">Guests <span class="opt">optional</span></label>
+          <input id="e-guests" name="guests" type="number" min="1" max="500" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="e-message">Tell us a little more</label>
+        <textarea id="e-message" name="message" rows="4" required></textarea>
+      </div>
+
+      <p class="form-error" id="enquire-error" role="alert" hidden></p>
+
+      <button class="btn btn--solid form-submit" type="submit" id="enquire-submit">Send enquiry</button>
+      <p class="form-note">We reply from <a href="mailto:info@amamiitalia.com">info@amamiitalia.com</a>, usually within a day.</p>
+    </form>
+
+    <p class="form-done" id="enquire-done" role="status" hidden>
+      Grazie — your enquiry is with us. We will be in touch shortly.
+    </p>
+  </section>
 
   <figure class="scene">
     <picture>
@@ -149,6 +223,8 @@
   }
 })();
 </script>
+
+<script src="assets/enquiry.js" defer></script>
 
 </body>
 </html>

@@ -11,7 +11,10 @@
   --beige:     #eee9da;
   --brown:     #462e24;
   --rare:      #812b28;
-  /* .72 alpha keeps secondary text at 5.9:1 on mist — AA for small text */
+  /* The page sits on Warm Beige; Mist Blue is kept for the illustration's
+     own sky band and the careers role cards, so the deck stays intact. */
+  --paper:     var(--beige);
+  /* .72 alpha keeps secondary text at 7.9:1 on beige — AA for small text */
   --ink-soft:  rgba(22,22,22,.72);
   --rule:      rgba(70,46,36,.22);
 
@@ -25,7 +28,7 @@ html{ color-scheme:light; -webkit-text-size-adjust:100%; }
 
 body{
   margin:0;
-  background:var(--mist);
+  background:var(--paper);
   color:var(--charcoal);
   font-family:var(--body);
   font-weight:300;
@@ -42,32 +45,84 @@ body{
 }
 .skip:focus{ left:16px; top:16px; }
 
+/* The composition is left-anchored, the way the brand deck sets its pages —
+   the eye starts at the mark and falls down the stagger to the room. */
 .stage{
   max-width:920px;
   margin:0 auto;
   padding-inline:max(24px, env(safe-area-inset-left));
-  padding-block:64px 40px;
+  padding-block:56px 40px;
   display:flex;
   flex-direction:column;
-  align-items:center;
-  gap:34px;
-  text-align:center;
+  align-items:flex-start;
+  gap:30px;
+  text-align:left;
 }
 
-/* ---- mark + wordmark ---- */
-.mark{ width:104px; height:auto; display:block; opacity:.72; }
+/* ---- logo lockup ---- */
+/* Mark and wordmark ride together on one baseline, letterhead-style, so the
+   brand signs the page without competing with the headline. */
+.lockup{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  width:100%;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--rule);
+}
+
+.mark{ width:58px; height:auto; display:block; flex:none; }
 
 .wordmark{
   margin:0;
   font-family:var(--body);
-  font-weight:500;
-  font-size:clamp(1.25rem,1rem + 1.2vw,1.6rem);
-  letter-spacing:.42em;
-  text-indent:.42em;            /* optical centring against the tracking */
+  font-weight:400;
+  font-size:.78rem;
+  letter-spacing:.38em;
   line-height:1;
+  color:var(--charcoal);
 }
 .wordmark a{ color:inherit; text-decoration:none; }
 .wordmark a:focus-visible{ outline:2px solid var(--rare); outline-offset:6px; }
+
+/* A quiet right-hand note on the same rule — city, or a status word. */
+.lockup__note{
+  margin:0 0 0 auto;
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:300;
+  font-size:.92rem;
+  letter-spacing:.06em;
+  color:var(--brown);
+}
+
+/* ---- the display headline ---- */
+/* Each line steps in a little further. The stagger is the whole idea:
+   it reads as handwriting on a card rather than a centred announcement. */
+.display{
+  margin:14px 0 0;
+  max-width:100%;
+  font-family:var(--display);
+  font-weight:300;
+  font-size:clamp(2.1rem, 1.1rem + 4.4vw, 4rem);
+  line-height:1.16;
+  letter-spacing:.005em;
+  text-transform:none;
+  color:var(--charcoal);
+}
+.display span{ display:block; }
+.display span:nth-child(2){ padding-left:1.1em; }
+.display span:nth-child(3){ padding-left:2.2em; }
+.display span:nth-child(4){ padding-left:3.3em; }
+
+/* Medium Rare Red, italic, on the word the sentence turns on.
+   nowrap so a narrow screen never splits the accent phrase in half. */
+.display em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--rare);
+  white-space:nowrap;
+}
 
 /* A quiet label under the wordmark, e.g. "Careers" */
 .eyebrow{
@@ -103,13 +158,15 @@ body{
   text-wrap:pretty;
 }
 
+/* Sits under the last, deepest line of the stagger and continues it. */
 .sign{
-  margin:-16px 0 0;
+  margin:-14px 0 0;
+  padding-left:3.3em;
   font-family:var(--display);
   font-style:italic;
   font-weight:300;
-  font-size:1.05rem;
-  letter-spacing:.03em;
+  font-size:1.1rem;
+  letter-spacing:.04em;
   color:var(--brown);
 }
 
@@ -117,9 +174,10 @@ body{
 .actions{
   display:flex;
   flex-wrap:wrap;
-  justify-content:center;
-  gap:14px;
+  justify-content:flex-start;
+  gap:12px;
   width:100%;
+  margin-top:4px;
 }
 
 .btn{
@@ -238,7 +296,7 @@ body{
 .detail__row{
   display:flex;
   flex-wrap:wrap;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
   gap:0 14px;
 }
@@ -251,11 +309,23 @@ body{
    Phones
    ========================================================================== */
 @media (max-width:560px){
-  .stage{ padding-block:44px 32px; gap:26px; }
-  .mark{ width:84px; }
+  .stage{ padding-block:36px 32px; gap:24px; }
+  .mark{ width:46px; }
+
+  /* The stagger has to give way on a narrow column, or the last line runs
+     off the page. Halve it — the step is still legible, the lines still fit. */
+  .display{ font-size:clamp(1.7rem,1rem + 3.6vw,2.2rem); line-height:1.22; }
+  .display span:nth-child(2){ padding-left:.55em; }
+  .display span:nth-child(3){ padding-left:1.1em; }
+  .display span:nth-child(4){ padding-left:1.65em; }
+  .sign{ padding-left:1.65em; font-size:1rem; }
+
+  .lockup{ gap:12px; padding-bottom:18px; }
+  .wordmark{ font-size:.66rem; letter-spacing:.3em; }
+  .lockup__note{ font-size:.82rem; }
 
   /* Stack the actions full-width so each is an easy, unambiguous tap. */
-  .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:340px; }
+  .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:none; }
   .btn{ width:100%; padding:16px 20px; }
   .btn--call{ display:inline-flex; }
 
@@ -263,11 +333,11 @@ body{
   .role{ padding:22px 20px; }
 
   .detail{ gap:2px; }
-  .detail__row{ flex-direction:column; gap:0; }
+  .detail__row{ flex-direction:column; align-items:flex-start; gap:0; }
   .detail__row .sep{ display:none; }
   .detail a{ padding:11px 2px; }
   .detail__hours{
-    flex-direction:row; flex-wrap:wrap; justify-content:center;
+    flex-direction:row; flex-wrap:wrap; justify-content:flex-start;
     gap:4px 10px; font-size:.7rem; padding-top:10px;
   }
   .detail__hours .sep{ display:inline; }
@@ -275,4 +345,141 @@ body{
 
 @media (prefers-reduced-motion:reduce){
   *{ transition:none !important; }
+}
+
+/* ==========================================================================
+   Enquiry form
+   Lives under the actions row on the holding page. Quiet by default — the
+   panel only opens when someone asks for it, so the page stays a held breath.
+   ========================================================================== */
+
+.enquire{
+  width:100%;
+  max-width:560px;
+  text-align:left;
+  border-top:1px solid var(--rule);
+  padding-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  animation:enquire-in .32s ease both;
+}
+.enquire[hidden]{ display:none; }
+.enquire .section-title{ text-align:left; }
+
+@keyframes enquire-in{
+  from{ opacity:0; transform:translateY(-6px); }
+  to  { opacity:1; transform:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .enquire{ animation:none; }
+}
+
+.form{ display:flex; flex-direction:column; gap:16px; }
+
+.field{ display:flex; flex-direction:column; gap:7px; flex:1 1 0; min-width:0; }
+.field-row{ display:flex; gap:14px; }
+
+.field label{
+  font-size:.66rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.field .opt{
+  letter-spacing:.08em;
+  text-transform:none;
+  font-style:italic;
+  opacity:.7;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  min-height:46px;
+  padding:12px 14px;
+  font-family:var(--body);
+  font-size:.9rem;
+  font-weight:300;
+  color:var(--charcoal);
+  background:rgba(255,255,255,.5);
+  border:1px solid var(--rule);
+  border-radius:0;
+  transition:border-color .2s ease, background-color .2s ease;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.field textarea{ min-height:112px; resize:vertical; line-height:1.65; }
+
+/* the caret, drawn rather than borrowed, so it matches the palette */
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23462e24' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover{ border-color:rgba(70,46,36,.42); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  background:rgba(255,255,255,.82);
+  border-color:var(--brown);
+  box-shadow:0 0 0 2px rgba(70,46,36,.14);
+}
+
+.field input::placeholder,
+.field textarea::placeholder{ color:rgba(22,22,22,.38); }
+
+/* honeypot — present for bots, gone for everyone else */
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+.form-submit{ align-self:flex-start; margin-top:4px; }
+.form-submit[disabled]{ opacity:.6; cursor:progress; }
+
+.form-note{
+  margin:0;
+  font-size:.72rem;
+  line-height:1.6;
+  letter-spacing:.04em;
+  color:var(--ink-soft);
+}
+.form-note a{ color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.form-note a:hover{ color:var(--rare); }
+
+.form-error{
+  margin:0;
+  padding:11px 14px;
+  font-size:.78rem;
+  line-height:1.6;
+  color:var(--rare);
+  background:rgba(129,43,40,.07);
+  border-left:2px solid var(--rare);
+}
+.form-error[hidden]{ display:none; }
+
+.form-done{
+  margin:0;
+  padding:22px 20px;
+  font-family:var(--display);
+  font-size:1.15rem;
+  font-weight:400;
+  letter-spacing:.05em;
+  line-height:1.55;
+  text-align:left;
+  color:var(--brown);
+  border:1px solid var(--rule);
+  background:rgba(255,255,255,.46);
+}
+.form-done[hidden]{ display:none; }
+
+@media (max-width:560px){
+  .enquire{ padding-top:22px; gap:16px; }
+  .field-row{ flex-direction:column; gap:16px; }
+  .form-submit{ align-self:stretch; }
 }
