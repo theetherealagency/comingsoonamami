@@ -369,6 +369,7 @@ body{
 }
 
 .form{ display:flex; flex-direction:column; gap:16px; }
+.form[hidden]{ display:none; }
 
 .field{ display:flex; flex-direction:column; gap:7px; flex:1 1 0; min-width:0; }
 .field-row{ display:flex; gap:14px; }
