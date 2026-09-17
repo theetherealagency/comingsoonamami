@@ -11,12 +11,17 @@
   --beige:     #eee9da;
   --brown:     #462e24;
   --rare:      #812b28;
-  /* The page sits on Warm Beige; Mist Blue is kept for the illustration's
-     own sky band and the careers role cards, so the deck stays intact. */
-  --paper:     var(--beige);
-  /* .72 alpha keeps secondary text at 7.9:1 on beige — AA for small text */
-  --ink-soft:  rgba(22,22,22,.72);
-  --rule:      rgba(70,46,36,.22);
+  /* The page runs on Charcoal with Warm Beige type. Mist Blue and Tuscan
+     Brown stay where the deck puts them — the illustration's sky band and
+     the careers role cards — so nothing is dropped from the palette. */
+  --paper:     var(--charcoal);
+  --ink:       var(--beige);
+  /* .68 alpha keeps secondary type at 7.4:1 on charcoal — AA for small text */
+  --ink-soft:  rgba(238,233,218,.68);
+  --rule:      rgba(238,233,218,.20);
+  /* Medium Rare Red only reaches 2.3:1 as type on charcoal, so it is used as
+     a fill; this lifted tint of it carries the accent where type needs it. */
+  --accent:    #c9605a;
 
   --display: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --body:    "Poppins", "Helvetica Neue", Arial, sans-serif;
@@ -24,12 +29,12 @@
 
 *,*::before,*::after{ box-sizing:border-box; }
 
-html{ color-scheme:light; -webkit-text-size-adjust:100%; }
+html{ color-scheme:dark; -webkit-text-size-adjust:100%; }
 
 body{
   margin:0;
   background:var(--paper);
-  color:var(--charcoal);
+  color:var(--ink);
   font-family:var(--body);
   font-weight:300;
   -webkit-font-smoothing:antialiased;
@@ -39,14 +44,14 @@ body{
 .skip{
   position:absolute; left:-9999px;
   padding:12px 18px;
-  background:var(--charcoal); color:var(--beige);
+  background:var(--beige); color:var(--charcoal);
   font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
   z-index:10;
 }
 .skip:focus{ left:16px; top:16px; }
 
-/* The composition is left-anchored, the way the brand deck sets its pages —
-   the eye starts at the mark and falls down the stagger to the room. */
+/* The letterhead rule spans the column; everything under it is centred,
+   the way the page read before. */
 .stage{
   max-width:920px;
   margin:0 auto;
@@ -54,9 +59,9 @@ body{
   padding-block:56px 40px;
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
+  align-items:center;
   gap:30px;
-  text-align:left;
+  text-align:center;
 }
 
 /* ---- logo lockup ---- */
@@ -71,7 +76,12 @@ body{
   border-bottom:1px solid var(--rule);
 }
 
-.mark{ width:58px; height:auto; display:block; flex:none; }
+.mark{
+  width:58px; height:auto; display:block; flex:none;
+  /* invert flips the black artwork to light; the sepia/hue pass warms that
+     white toward Warm Beige so the mark matches the type beside it. */
+  filter:invert(1) sepia(24%) saturate(180%) hue-rotate(350deg) brightness(.97);
+}
 
 .wordmark{
   margin:0;
@@ -80,10 +90,10 @@ body{
   font-size:.78rem;
   letter-spacing:.38em;
   line-height:1;
-  color:var(--charcoal);
+  color:var(--ink);
 }
 .wordmark a{ color:inherit; text-decoration:none; }
-.wordmark a:focus-visible{ outline:2px solid var(--rare); outline-offset:6px; }
+.wordmark a:focus-visible{ outline:2px solid var(--accent); outline-offset:6px; }
 
 /* A quiet right-hand note on the same rule — city, or a status word. */
 .lockup__note{
@@ -93,35 +103,7 @@ body{
   font-weight:300;
   font-size:.92rem;
   letter-spacing:.06em;
-  color:var(--brown);
-}
-
-/* ---- the display headline ---- */
-/* Each line steps in a little further. The stagger is the whole idea:
-   it reads as handwriting on a card rather than a centred announcement. */
-.display{
-  margin:14px 0 0;
-  max-width:100%;
-  font-family:var(--display);
-  font-weight:300;
-  font-size:clamp(2.1rem, 1.1rem + 4.4vw, 4rem);
-  line-height:1.16;
-  letter-spacing:.005em;
-  text-transform:none;
-  color:var(--charcoal);
-}
-.display span{ display:block; }
-.display span:nth-child(2){ padding-left:1.1em; }
-.display span:nth-child(3){ padding-left:2.2em; }
-.display span:nth-child(4){ padding-left:3.3em; }
-
-/* Medium Rare Red, italic, on the word the sentence turns on.
-   nowrap so a narrow screen never splits the accent phrase in half. */
-.display em{
-  font-style:italic;
-  font-weight:400;
-  color:var(--rare);
-  white-space:nowrap;
+  color:var(--ink-soft);
 }
 
 /* A quiet label under the wordmark, e.g. "Careers" */
@@ -158,23 +140,21 @@ body{
   text-wrap:pretty;
 }
 
-/* Sits under the last, deepest line of the stagger and continues it. */
 .sign{
-  margin:-14px 0 0;
-  padding-left:3.3em;
+  margin:-16px 0 0;
   font-family:var(--display);
   font-style:italic;
   font-weight:300;
-  font-size:1.1rem;
-  letter-spacing:.04em;
-  color:var(--brown);
+  font-size:1.05rem;
+  letter-spacing:.03em;
+  color:var(--ink-soft);
 }
 
 /* ---- actions ---- */
 .actions{
   display:flex;
   flex-wrap:wrap;
-  justify-content:flex-start;
+  justify-content:center;
   gap:12px;
   width:100%;
   margin-top:4px;
@@ -192,14 +172,14 @@ body{
   letter-spacing:.2em;
   text-transform:uppercase;
   text-decoration:none;
-  border:1px solid var(--charcoal);
+  border:1px solid var(--ink);
   transition:background-color .25s ease,color .25s ease,border-color .25s ease;
 }
-.btn--solid{ background:var(--charcoal); color:var(--beige); }
+.btn--solid{ background:var(--beige); color:var(--charcoal); }
 .btn--solid:hover,.btn--solid:focus-visible{ background:var(--rare); border-color:var(--rare); color:var(--beige); }
-.btn--line{ background:transparent; color:var(--charcoal); border-color:var(--brown); }
-.btn--line:hover,.btn--line:focus-visible{ background:var(--brown); border-color:var(--brown); color:var(--beige); }
-.btn:focus-visible{ outline:2px solid var(--rare); outline-offset:3px; }
+.btn--line{ background:transparent; color:var(--ink); border-color:var(--rule); }
+.btn--line:hover,.btn--line:focus-visible{ background:var(--rare); border-color:var(--rare); color:var(--beige); }
+.btn:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
 /* Calling is the top task on a phone, secondary on a desktop */
 .btn--call{ display:none; }
@@ -221,11 +201,16 @@ body{
   background:currentColor;
   vertical-align:.08em;
 }
-.status[data-state="open"]{ color:var(--brown); }
+.status[data-state="open"]{ color:var(--accent); }
 
 /* ---- the room ---- */
 .scene{ margin:8px 0 0; width:100%; }
-.scene img{ display:block; width:100%; max-width:100%; height:auto; }
+/* The illustration carries its own cream ground, so on charcoal it reads as a
+   lit picture on a dark wall — the hairline keeps that edge deliberate. */
+.scene img{
+  display:block; width:100%; max-width:100%; height:auto;
+  border:1px solid var(--rule);
+}
 
 /* ---- roles (careers) ---- */
 .roles{
@@ -290,20 +275,20 @@ body{
   border-bottom:1px solid transparent;
   transition:color .2s ease,border-color .2s ease;
 }
-.detail a:hover,.detail a:focus-visible{ color:var(--rare); border-bottom-color:var(--rare); }
-.detail a:focus-visible{ outline:2px solid var(--rare); outline-offset:2px; }
-.detail a[aria-current="page"]{ color:var(--charcoal); border-bottom-color:var(--rule); }
+.detail a:hover,.detail a:focus-visible{ color:var(--accent); border-bottom-color:var(--accent); }
+.detail a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.detail a[aria-current="page"]{ color:var(--ink); border-bottom-color:var(--rule); }
 .detail__row{
   display:flex;
   flex-wrap:wrap;
-  justify-content:flex-start;
+  justify-content:center;
   align-items:center;
   gap:0 14px;
 }
-.sep{ color:rgba(70,46,36,.45); }
+.sep{ color:rgba(238,233,218,.38); }
 .detail__hours{ letter-spacing:.08em; gap:4px 12px; padding-top:6px; }
 .detail__hours span{ white-space:nowrap; }
-.detail__hours [data-today]{ color:var(--charcoal); }
+.detail__hours [data-today]{ color:var(--ink); }
 
 /* ==========================================================================
    Phones
@@ -312,20 +297,12 @@ body{
   .stage{ padding-block:36px 32px; gap:24px; }
   .mark{ width:46px; }
 
-  /* The stagger has to give way on a narrow column, or the last line runs
-     off the page. Halve it — the step is still legible, the lines still fit. */
-  .display{ font-size:clamp(1.7rem,1rem + 3.6vw,2.2rem); line-height:1.22; }
-  .display span:nth-child(2){ padding-left:.55em; }
-  .display span:nth-child(3){ padding-left:1.1em; }
-  .display span:nth-child(4){ padding-left:1.65em; }
-  .sign{ padding-left:1.65em; font-size:1rem; }
-
   .lockup{ gap:12px; padding-bottom:18px; }
   .wordmark{ font-size:.66rem; letter-spacing:.3em; }
   .lockup__note{ font-size:.82rem; }
 
   /* Stack the actions full-width so each is an easy, unambiguous tap. */
-  .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:none; }
+  .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:340px; }
   .btn{ width:100%; padding:16px 20px; }
   .btn--call{ display:inline-flex; }
 
@@ -333,11 +310,11 @@ body{
   .role{ padding:22px 20px; }
 
   .detail{ gap:2px; }
-  .detail__row{ flex-direction:column; align-items:flex-start; gap:0; }
+  .detail__row{ flex-direction:column; align-items:center; gap:0; }
   .detail__row .sep{ display:none; }
   .detail a{ padding:11px 2px; }
   .detail__hours{
-    flex-direction:row; flex-wrap:wrap; justify-content:flex-start;
+    flex-direction:row; flex-wrap:wrap; justify-content:center;
     gap:4px 10px; font-size:.7rem; padding-top:10px;
   }
   .detail__hours .sep{ display:inline; }
@@ -365,7 +342,7 @@ body{
   animation:enquire-in .32s ease both;
 }
 .enquire[hidden]{ display:none; }
-.enquire .section-title{ text-align:left; }
+.enquire .section-title{ text-align:center; }
 
 @keyframes enquire-in{
   from{ opacity:0; transform:translateY(-6px); }
@@ -402,8 +379,8 @@ body{
   font-family:var(--body);
   font-size:.9rem;
   font-weight:300;
-  color:var(--charcoal);
-  background:rgba(255,255,255,.5);
+  color:var(--ink);
+  background:rgba(238,233,218,.06);
   border:1px solid var(--rule);
   border-radius:0;
   transition:border-color .2s ease, background-color .2s ease;
@@ -414,7 +391,7 @@ body{
 
 /* the caret, drawn rather than borrowed, so it matches the palette */
 .field select{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23462e24' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23eee9da' stroke-width='1.2'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
   background-position:right 14px center;
   padding-right:36px;
@@ -422,19 +399,19 @@ body{
 
 .field input:hover,
 .field select:hover,
-.field textarea:hover{ border-color:rgba(70,46,36,.42); }
+.field textarea:hover{ border-color:rgba(238,233,218,.42); }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus{
   outline:none;
-  background:rgba(255,255,255,.82);
-  border-color:var(--brown);
-  box-shadow:0 0 0 2px rgba(70,46,36,.14);
+  background:rgba(238,233,218,.11);
+  border-color:var(--ink-soft);
+  box-shadow:0 0 0 2px rgba(238,233,218,.14);
 }
 
 .field input::placeholder,
-.field textarea::placeholder{ color:rgba(22,22,22,.38); }
+.field textarea::placeholder{ color:rgba(238,233,218,.38); }
 
 /* honeypot — present for bots, gone for everyone else */
 .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
@@ -450,16 +427,16 @@ body{
   color:var(--ink-soft);
 }
 .form-note a{ color:inherit; text-decoration:underline; text-underline-offset:3px; }
-.form-note a:hover{ color:var(--rare); }
+.form-note a:hover{ color:var(--accent); }
 
 .form-error{
   margin:0;
   padding:11px 14px;
   font-size:.78rem;
   line-height:1.6;
-  color:var(--rare);
-  background:rgba(129,43,40,.07);
-  border-left:2px solid var(--rare);
+  color:var(--accent);
+  background:rgba(201,96,90,.1);
+  border-left:2px solid var(--accent);
 }
 .form-error[hidden]{ display:none; }
 
@@ -471,10 +448,10 @@ body{
   font-weight:400;
   letter-spacing:.05em;
   line-height:1.55;
-  text-align:left;
-  color:var(--brown);
+  text-align:center;
+  color:var(--ink);
   border:1px solid var(--rule);
-  background:rgba(255,255,255,.46);
+  background:rgba(238,233,218,.06);
 }
 .form-done[hidden]{ display:none; }
 
