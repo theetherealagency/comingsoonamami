@@ -1,11 +1,12 @@
 /* Amami Italia — enquiry form.
 
    The panel is open in the markup and closed here, so a visitor without JS
-   still gets a working form (it posts natively to the same endpoint).
+   still gets a working form (it posts natively to the same endpoint, which
+   redirects back with ?enquiry=sent).
 
-   Submissions go to the Apps Script endpoint with form=enquiry; the script
-   mails admin@amamiitalia.com. If the endpoint is unreachable we fall back to
-   a pre-filled email rather than swallowing the enquiry. */
+   Submissions go to /api/enquire, which mails info@amamiitalia.com via Resend.
+   If the endpoint is unreachable we fall back to a pre-filled email rather
+   than swallowing the enquiry. */
 
 (function () {
   "use strict";
@@ -53,6 +54,13 @@
   // A link straight to #enquire (shared, bookmarked) should land open.
   if (window.location.hash === "#enquire") open();
 
+  // Coming back from a no-JS post, the endpoint redirects with ?enquiry=sent.
+  if (/[?&]enquiry=sent(&|$)/.test(window.location.search)) {
+    open();
+    form.hidden = true;
+    done.hidden = false;
+  }
+
   /* ---------- submit ---------- */
   function fail(msg, el) {
     errBox.textContent = msg;
@@ -64,7 +72,7 @@
   function mailFallback(fd) {
     var lines = [];
     fd.forEach(function (v, k) {
-      if (!v || k === "company_website" || k === "form") return;
+      if (!v || k === "company_website") return;
       lines.push(k + ": " + v);
     });
     window.location.href = "mailto:" + MAILTO +
@@ -92,9 +100,12 @@
 
     var body = new URLSearchParams();
     fd.forEach(function (v, k) { body.append(k, v); });
-    body.append("page", "holding");
 
-    fetch(ENDPOINT, { method: "POST", body: body })
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "X-Requested-With": "fetch" },   // ask for JSON, not the redirect
+      body: body
+    })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.ok) {

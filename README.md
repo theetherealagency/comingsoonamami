@@ -19,23 +19,36 @@ Mist Blue palette, the careers page its own darker treatment.
 
 ## The forms
 
-Both forms POST to the same Google Apps Script endpoint, so they work from any
-origin and need no server here.
+The two forms use different backends, for the reason each needs.
 
-| Form     | Script                 | Posts `form=` | Lands at               |
-|----------|------------------------|---------------|------------------------|
-| Careers  | `_assets/careers.js`   | `careers`     | `info@amamiitalia.com` |
-| Enquiry  | `assets/enquiry.js`    | `enquiry`     | `admin@amamiitalia.com`|
+| Form     | Script               | Posts to                  | Lands at               |
+|----------|----------------------|---------------------------|------------------------|
+| Careers  | `_assets/careers.js` | Google Apps Script        | `info@amamiitalia.com` |
+| Enquiry  | `assets/enquiry.js`  | `api/enquire.js` (Resend) | `info@amamiitalia.com` |
 
-`docs/apps-script.gs` is the script behind that endpoint — it branches on the
-`form` field and routes each to its own inbox. Editing it is a paste-and-deploy
-job in script.google.com; the file's header has the steps. **Edit the existing
-deployment rather than creating a new one**, or the URL changes and both forms
-break.
+**Careers** posts to a Google Apps Script web app, unchanged and deployed
+outside this repo. It carries a résumé file, which Apps Script handles without
+a size-limited request body here.
+
+**Enquiry** posts to `api/enquire.js`, a single Vercel function — no framework,
+no dependencies, just `fetch` to Resend's HTTP API. Set this in the Vercel
+project (Settings → Environment Variables):
+
+| Variable         | Required | Default                                |
+|------------------|----------|----------------------------------------|
+| `RESEND_API_KEY` | yes      | —                                      |
+| `ENQUIRY_TO`     | no       | `info@amamiitalia.com`                 |
+| `ENQUIRY_FROM`   | no       | `Amami Italia <onboarding@resend.dev>` |
+
+Once `amamiitalia.com` is verified in Resend, set `ENQUIRY_FROM` to an address
+on that domain — until then Resend's shared sender is used, which delivers but
+is not branded.
 
 The enquiry panel is open in the markup and closed by JS on load, so a visitor
-without JavaScript still sees a form that posts. If the endpoint is unreachable,
-the script falls back to a pre-filled `mailto:` rather than losing the enquiry.
+without JavaScript still sees a form that posts; the function redirects that
+post back to `/?enquiry=sent`, which the script reads to show the confirmation.
+If the endpoint is unreachable, the script falls back to a pre-filled `mailto:`
+rather than losing the enquiry.
 
 ## Domain
 
