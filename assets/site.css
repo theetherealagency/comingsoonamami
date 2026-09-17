@@ -124,16 +124,6 @@ body{
 .wordmark a{ color:inherit; text-decoration:none; }
 .wordmark a:focus-visible{ outline:2px solid var(--accent); outline-offset:6px; }
 
-/* A quiet right-hand note on the same rule — city, or a status word. */
-.lockup__note{
-  margin:0 0 0 auto;
-  font-family:var(--display);
-  font-style:italic;
-  font-weight:300;
-  font-size:.92rem;
-  letter-spacing:.06em;
-  color:var(--ink-soft);
-}
 
 /* A quiet label under the wordmark, e.g. "Careers" */
 .eyebrow{
@@ -234,12 +224,10 @@ body{
 
 /* ---- the room ---- */
 .scene{ margin:8px 0 0; width:100%; }
-/* The illustration carries its own cream ground, so on charcoal it reads as a
-   lit picture on a dark wall — the hairline keeps that edge deliberate. */
-.scene img{
-  display:block; width:100%; max-width:100%; height:auto;
-  border:1px solid var(--rule);
-}
+/* The artwork's corners are transparent, so a border would draw a rectangle
+   the illustration does not fill. Left unframed, those corners fall away into
+   the page and the room reads as lit against the dark. */
+.scene img{ display:block; width:100%; max-width:100%; height:auto; }
 
 /* ---- roles (careers) ---- */
 .roles{
@@ -328,7 +316,6 @@ body{
 
   .lockup{ gap:12px; padding-bottom:18px; }
   .wordmark{ font-size:.66rem; letter-spacing:.3em; }
-  .lockup__note{ font-size:.82rem; }
 
   /* Stack the actions full-width so each is an easy, unambiguous tap. */
   .actions{ flex-direction:column; align-items:stretch; gap:10px; max-width:340px; }
